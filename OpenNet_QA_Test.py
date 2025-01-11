@@ -179,12 +179,9 @@ class Twitch_test(SeleniumLibBase):
 
             # Check res format
             try:
-                if isinstance(res.json(), dict): 
-                    log('Response is JSON format.')
-                    log(res.text, level='DEBUG')
-                else: 
-                    log('<b>Response is NOT JSON format.</b>')
-                    err.append('Response is NOT JSON format.')            
+                if not self.is_res_JSON(res.json()): 
+                    err.append(f"Response is NOT JSON format.")
+    
                 # Check hostname key and value
                 response = res.json()
                 if param["hostname"] in [1, 0]: #valid
