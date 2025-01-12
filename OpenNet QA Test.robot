@@ -14,6 +14,7 @@ Twitch Streamer Check
     ...                on the streamer page wait until all is load and take a screenshot
     [Setup]    Check Network Connection
     Twitch Scrape
+    [Teardown]    Run Keyword If Test Failed    Close Down All Browsers
 
 GET Basic Standard IP Lookup positive
     [Documentation]    {access_key : valid testkey} return 200 with JSON body, check data type of each response value    
@@ -28,3 +29,6 @@ Set Valid and Invalid Hostname
     ...                {access_key : valid testkey, hostname : 0} return 200, response should NOT contain hostname key
     Set_Valid_and_Invalid_Hostname
 
+Test All Methods
+    [Documentation]    Test GET, PATCH, POST, PUT, DELETE and check methods support status
+    Test_all_methods

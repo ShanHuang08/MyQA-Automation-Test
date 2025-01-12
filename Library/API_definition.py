@@ -23,9 +23,6 @@ class API_Methods():
             raise Exception(f'ConnectionError: {e}')
         except urllib3.exceptions.ReadTimeoutError as e:
             raise Exception(f'ReadTimeoutError: {e}')
-        
-        if exp_code and (Get_data.status_code != int(exp_code)):
-            raise Exception(f"Status code should be {exp_code} but it is {Get_data.status_code}\nResponse body:")
         return Get_data
 
     def PATCH_Request(self, url, auth, body, params=None,  timeout=10, exp_code=None):
@@ -44,9 +41,6 @@ class API_Methods():
             raise Exception(f'ConnectionError: {e}')
         except requests.exceptions.Timeout as e:
             raise Exception(f'Timeout: {e}')
-        
-        if exp_code and (Patch_data.status_code != int(exp_code)):
-            raise Exception(f"Status code should be {exp_code} but it is {Patch_data.status_code}\nResponse body:")
         return Patch_data
 
 
@@ -66,17 +60,32 @@ class API_Methods():
             raise Exception(f'ConnectionError: {e}')
         except requests.exceptions.Timeout as e:
             raise Exception(f'Timeout: {e}')
-        
-        if exp_code and (Post_data.status_code != int(exp_code)):
-            raise Exception(f"Status code should be {exp_code} but it is {Post_data.status_code}\nResponse body:")
         return Post_data
+    
+    def PUT_Request(self, url, auth, body, params=None,  timeout=10, exp_code=None):
+        """
+        `params=None`, Timeout `10 secs`, Default body = `None` `json=body`
+        """
+        try:
+            Put_data = requests.put(url=url, params=params, auth=auth, json=body, verify=False, timeout=timeout)
+            log(f"making PUT request {url} withp params {params} and body {body} and expeted return {exp_code}")
+            
+        except requests.exceptions.HTTPError as e:
+            raise Exception(f'HTTPError: {e}')
+        except requests.exceptions.ConnectTimeout as e:
+            raise Exception(f'ConnectTimeout: {e}')
+        except requests.exceptions.ConnectionError as e:
+            raise Exception(f'ConnectionError: {e}')
+        except requests.exceptions.Timeout as e:
+            raise Exception(f'Timeout: {e}')
+        return Put_data    
 
-    def DELETE_Request(self, url, auth, params=None,  exp_code=None):
+    def DELETE_Request(self, url, auth, params=None,  exp_code=None, timeout=10):
         """
         `params=None`, Timeout `10 secs`
         """
         try:
-            Delete_data = requests.delete(url=url, params=params, auth=auth, verify=False, timeout=10, exp_code=None)
+            Delete_data = requests.delete(url=url, params=params, auth=auth, verify=False, timeout=timeout)
             log(f"making DELETE request {url}, params is {params} and expeted return {exp_code}")
         except requests.exceptions.HTTPError as e:
             raise Exception(f'HTTPError: {e}')
@@ -86,9 +95,6 @@ class API_Methods():
             raise Exception(f'ConnectionError: {e}')
         except requests.exceptions.Timeout as e:
             raise Exception(f'Timeout: {e}')
-        
-        if exp_code and (Delete_data.status_code != int(exp_code)):
-            raise Exception(f"Status code should be {exp_code} but it is {Delete_data.status_code}\nResponse body:")
         return Delete_data
 
 

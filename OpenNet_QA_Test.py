@@ -14,6 +14,7 @@ class Twitch_test(SeleniumLibBase):
         get_lib_instance('SeleniumLibBase', all_=True)
         self.api = API_Methods()
         self.api_url = 'https://api.ipstack.com/134.201.250.155'
+        self.api_key = '1b6e1c179b53af92af9c63a956bdfbff'
         
     
     def Check_Network_Connection(self):
@@ -67,7 +68,12 @@ class Twitch_test(SeleniumLibBase):
         # Check video controller
         self.se_lib.wait_until_element_is_visible('xpath:'+Twitch_Xpath["Video Controller"], timeout=10)
         # Check video controller is hidden
-        self.se_lib.wait_until_element_is_visible('xpath:'+Twitch_Xpath["Check controller is hidden"], timeout=20)
+        try:
+            self.se_lib.wait_until_element_is_visible('xpath:'+Twitch_Xpath["Check controller div is hidden"], timeout=10)
+        except:
+            log('Check controller div is hidden check failed')
+            self.se_lib.wait_until_element_is_visible('xpath:'+Twitch_Xpath["Check controller is hidden"], timeout=10)
+
         run('Capture_a_Screenshot', 'Live Streaming.png')
         self.se_lib.close_all_browsers()
     
@@ -76,11 +82,10 @@ class Twitch_test(SeleniumLibBase):
         err = []
         url = self.inspect_url(self.api_url)
         key = "access_key"
-        value = 'e5a62f828501ddd4e33acfd3949f81f3'
         exp_status = 200
-        exp_url = self.expect_url(url, {key : value})
+        exp_url = self.expect_url(url, {key : self.api_key})
 
-        res = self.api.GET_Request(url, params={key : value}, exp_code=exp_status)
+        res = self.api.GET_Request(url, params={key : self.api_key}, exp_code=exp_status)
         # Check status code
         if not self.Check_if_status_code_match(res.status_code, exp_status): 
             err.append(f'Check status code failed! {res.status_code} != {exp_status}')
@@ -158,11 +163,10 @@ class Twitch_test(SeleniumLibBase):
     def Set_Valid_and_Invalid_Hostname(self):
         err = []
         url = self.inspect_url(self.api_url)
-        key = 'e5a62f828501ddd4e33acfd3949f81f3'
 
-        Test_params = [({'access_key' : key, 'hostname' : 1}, 200),
-                       ({'access_key' : key, 'hostname' : 0}, 200),
-                       ({'access_key' : key, 'hostname' : 123}, 200)
+        Test_params = [({'access_key' : self.api_key, 'hostname' : 1}, 200),
+                       ({'access_key' : self.api_key, 'hostname' : 0}, 200),
+                       ({'access_key' : self.api_key, 'hostname' : 123}, 200)
                        ]
 
         for param, exp_status in Test_params:
@@ -211,6 +215,61 @@ class Twitch_test(SeleniumLibBase):
             fail(f'Error: {err_msg}')
         else: log_color('Test PASS', color='blue')
 
+    def Test_all_methods(self):
+        err = []
+        url = self.inspect_url(self.api_url)
+        key = "access_key"
+        exp_status = 200
+        exp_url = self.expect_url(url, {key: self.api_key})
+
+        Method_support_list = ['GET support', 'PATCH not support', 'POST support', 'PUT not support', 'DELETE not support']
+        Function_list = [self.api.GET_Request(url, params={key: self.api_key}, exp_code=exp_status),
+                         self.api.PATCH_Request(url, params={key: self.api_key}, auth=None, body=None, exp_code=exp_status),
+                         self.api.POST_Request(url, params={key: self.api_key}, auth=None, body=None, exp_code=exp_status),
+                         self.api.PUT_Request(url, params={key: self.api_key}, auth=None, body=None, exp_code=exp_status),
+                         self.api.DELETE_Request(url, params={key: self.api_key}, auth=None, exp_code=exp_status)
+                         ]
+        
+        for func, sup in zip(Function_list, Method_support_list):
+            res = func
+            log(sup)
+            # Check Status code
+            if not self.Check_if_status_code_match(res.status_code, exp_status):
+                err.append(f'Check status code failed! {res.status_code} != {exp_status}')
+
+            if 'not' not in sup:
+                # Check some response keys
+                if not self.Check_some_keys(res.json()):
+                    err.append(f'Unable to get {key} key on {sup}')
+            else:
+                # Check detail key
+                res = func
+                try:
+                    log(f'Get detail key\n{res.json()["detail"]}')
+                except KeyError:
+                    log(f'Unable to get detail key', level='ERROR')
+                    err.append(f'Unable to get {key} key on {sup}')
+                
+        if err: 
+            err_msg = '\n'.join(msg for msg in err)
+            log_color('Test FAIL', color='red')
+            fail(f'Error: {err_msg}')
+        else: log_color('Test PASS', color='blue')
+     
+
+    def Check_some_keys(self, res):
+        """res=`res.json()`"""     
+        res_keys = ["ip", "type", "city", "city"]
+        try:
+            for key in res_keys:
+                log(f'{key} : {res[key]}')
+            return True
+        except KeyError:
+            log(f'Unable to get key {key}', level='ERROR')
+            return False
+            
+
+    
 
     def Check_if_status_code_match(self, actual, expect):
         """- Actual: `res.status_code`
