@@ -17,7 +17,7 @@ Please visit `Twitch_Scrape` function to check source code on `Open_QA_Test.py`
 7. Wait for stream loading page and video controller disapper
 8. Take a screenshot
 
-#### Execution MP4
+#### MP4 Execution 
 https://github.com/user-attachments/assets/794e259c-a231-45c4-a07a-f04bcbcc2b84
 
 #### Robot Test Report
