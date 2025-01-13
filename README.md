@@ -2,7 +2,7 @@
 
 This is introduction of OpenNet automation test, which incllude 2 parts, **Twitch WAP scrape** and **ipstack API test**.
 
-[Here's my latest Robot report](https://drive.google.com/file/d/1tgARhhHTHoG17E96I6ETgiIukeuqGkfr/view?usp=sharing)
+[Here's my latest Robot report](https://drive.google.com/file/d/11TIO3Qd30Bxmdb7ql7W_RQeXTzaAX9nA/view?usp=sharing)
 
 ### 1. Twitch WAP scrape
 Utilize [SeleniumLibrary keywords](https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html#Checkbox%20Should%20Not%20Be%20Selected) to scrape [Twitch WAP](https://m.twitch.tv/) screen and capture the screenshot on one of random StarCraft II streamer.\
@@ -45,8 +45,7 @@ Create 3 test cases to test different params and show test result on **Robot**. 
 |  GET Basic Standard IP Lookup positive |  Test param with valid access key doing positive test<br>1. Check status code is match<br>2. Check url match as expected, it should include param<br>3. Check response format is JSON<br>4. Display all keys data type     |        |
 |  GET Basic Standard IP Lookup negative |  Test 3 params with invalid access keys doing negative test<br>1. Check status code is match<br>2. Check url match as expected, it should include param<br>3. Check response format is JSON<br>4. Compare response value match as expected  |        |
 | Set Valid and Invalid Hostname  | Test 3 params with valid and invalid hostname, doing tests<br>1. Check status code is match<br>2. Check url match as expected, it should include param<br>3. Check response format is JSON<br>4. Check response in different scenrios<br>- Hostname exist with valid value<br>- Hostname should not exist with successful response<br>- Hostname should not exist with fail response |
-
-
+| Test All Methods | Test GET, PATCH, POST, PUT, DELETE respectively and check methods support status |  |
 
 #### Robot Test Report
 
@@ -55,4 +54,6 @@ Create 3 test cases to test different params and show test result on **Robot**. 
 ![擷取_2025_01_11_01_55_25](https://github.com/user-attachments/assets/1081df64-bfae-4c50-ae1f-65fbf0121c9b)
 
 ![擷取_2025_01_11_19_29_48](https://github.com/user-attachments/assets/a5b0529d-8e51-4d14-860c-76066d3c7024)
+
+![擷取_2025_01_12_10_37_22](https://github.com/user-attachments/assets/37ecb22f-4029-49c9-9122-31c70d4e8836)
 
