@@ -46,7 +46,7 @@ Create 3 test cases to test different params and show test result on **Robot**. 
 |  GET Basic Standard IP Lookup negative |  Test 3 params with invalid access keys doing negative test<br>1. Check status code is match<br>2. Check url match as expected, it should include param<br>3. Check response format is JSON<br>4. Compare response value match as expected  |        |
 | Set Valid and Invalid Hostname  | Test 3 params with valid and invalid hostname, doing tests<br>1. Check status code is match<br>2. Check url match as expected, it should include param<br>3. Check response format is JSON<br>4. Check response in different scenrios<br>- Hostname exist with valid value<br>- Hostname should not exist with successful response<br>- Hostname should not exist with fail response |
 | Set Valid and Invalid Hostname  | Test GET, PATCH, POST, PUT, DELETE respectively and check methods support status |  |
-
+| Test All Methods | Test GET, PATCH, POST, PUT, DELETE on same API and check methods support status |  |
 
 #### Robot Test Report
 
