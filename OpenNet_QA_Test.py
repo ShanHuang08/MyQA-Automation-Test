@@ -108,11 +108,7 @@ class Twitch_test(SeleniumLibBase):
             log(f"{e}\nCheck response format failed! {res.text}")
             err.append("Check response format failed!")
         
-        if err: 
-            err_msg = '\n'.join(msg for msg in err)
-            log_color('Test FAIL', color='red')
-            fail(f'Error: {err_msg}')
-        else: log_color('Test PASS', color='blue')
+        self.Final_check(self, err)
 
 
     def GET_Basic_Standard_IP_Lookup_negative(self):
@@ -153,11 +149,8 @@ class Twitch_test(SeleniumLibBase):
             except json.decoder.JSONDecodeError as e:
                 log(f"{e}\nCheck response format failed! {res.text}")
                 err.append("Check response format failed!")
-        if err: 
-            err_msg = '\n'.join(msg for msg in err)
-            log_color('Test FAIL', color='red')
-            fail(f'Error: {err_msg}')
-        else: log_color('Test PASS', color='blue')
+        
+        self.Final_check(self, err)
 
 
     def Set_Valid_and_Invalid_Hostname(self):
@@ -209,11 +202,7 @@ class Twitch_test(SeleniumLibBase):
                 log(f"{e}\nCheck response format failed! {res.text}")
                 err.append("Check response format failed!")
 
-        if err: 
-            err_msg = '\n'.join(msg for msg in err)
-            log_color('Test FAIL', color='red')
-            fail(f'Error: {err_msg}')
-        else: log_color('Test PASS', color='blue')
+        self.Final_check(self, err)
 
     def Test_all_methods(self):
         err = []
@@ -249,12 +238,8 @@ class Twitch_test(SeleniumLibBase):
                 except KeyError:
                     log(f'Unable to get detail key', level='ERROR')
                     err.append(f'Unable to get {key} key on {sup}')
-                
-        if err: 
-            err_msg = '\n'.join(msg for msg in err)
-            log_color('Test FAIL', color='red')
-            fail(f'Error: {err_msg}')
-        else: log_color('Test PASS', color='blue')
+
+        self.Final_check(self, err)     
      
 
     def Check_some_keys(self, res):
@@ -268,8 +253,6 @@ class Twitch_test(SeleniumLibBase):
             log(f'Unable to get key {key}', level='ERROR')
             return False
             
-
-    
 
     def Check_if_status_code_match(self, actual, expect):
         """- Actual: `res.status_code`
@@ -392,5 +375,12 @@ class Twitch_test(SeleniumLibBase):
             num+=1
             log(err, level='DEBUG')
         return len(err) == 0
+
+    def Final_check(self, err:list):
+        if err:
+            err_msg = '\n'.join(msg for msg in err)
+            log_color('Test FAIL', color='red')
+            fail(f'Error: {err_msg}')
+        else: log_color('Test PASS', color='blue')
 
 use_globals_update_keywords(Twitch_test(), globals())
