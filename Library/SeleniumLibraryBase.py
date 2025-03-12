@@ -43,15 +43,15 @@ class SeleniumLibBase():
             self.se_lib.click_element(locator)
         except TimeoutException as e:
             log(f"Timeout waiting for element {locator} after {timeout} seconds.\n{e}", level='WARN')
-            run('Capture_a_Screenshot', 'Click Element fail!')
+            run('Capture_a_Screenshot', 'Click Element fail.png')
             raise AssertionError(f"Timeout waiting for element {locator}")
         except ElementNotInteractableException as e:
             log(f"Element {locator} is not interactable (e.g., hidden or disabled).\n{e}", level='WARN')
-            run('Capture_a_Screenshot', 'Click Element is not interactable')
+            run('Capture_a_Screenshot', 'Click Element is not interactable.png')
             raise AssertionError(f"Element {locator} is not interactable")
         except Exception as e:
             log(f"An unexpected error occurred while clicking {locator}: {e}", level='ERROR')
-            run('Capture_a_Screenshot', 'Click element but got unexpected error')
+            run('Capture_a_Screenshot', 'Click element but got unexpected error.png')
             raise AssertionError(f"An unexpected error occurred while clicking {locator}")
     
     def Input_to_Textfield(self, locator, text, timeout=10):
@@ -62,11 +62,11 @@ class SeleniumLibBase():
             self.se_lib.input_text(locator, text)
         except ElementNotInteractableException as e:
             log(f"Element {locator} is not interactable (e.g., hidden or disabled).\n{e}", level='WARN')
-            run('Capture_a_Screenshot', 'Input element not interactable')
+            run('Capture_a_Screenshot', 'Input element not interactable.png')
             raise AssertionError(f"Element {locator} is not interactable")        
         except Exception as e:
             log(f"An unexpected error occurred while clicking {locator}: {e}", level='ERROR')
-            run('Capture_a_Screenshot', 'Input element got unexpected error')
+            run('Capture_a_Screenshot', 'Input element got unexpected error.png')
             raise AssertionError(f"An unexpected error occurred while clicking {locator}")       
 
 
