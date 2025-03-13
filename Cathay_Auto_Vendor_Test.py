@@ -1,4 +1,3 @@
-from Library.SeleniumBase import SeleniumBase
 from Library.SeleniumLibraryBase import SeleniumLibBase
 from Library.Robot_definition import log, log_color, log_img, run, fail, use_globals_update_keywords
 from Library.WebElements import Cathay_Xpath
@@ -11,7 +10,6 @@ class Cathay(SeleniumLibBase):
         self.firefoxdriver_path = 'C:\\Users\\Shan\\Workspace2\\geckodriver.exe'
         self.url = "https://www.cathaybk.com.tw/cathaybk/"
         self.se_lib = SeleniumLibrary()
-        self.se_base = SeleniumBase()
         self.timeout = 10
 
     # 自動化測試
