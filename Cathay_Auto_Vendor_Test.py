@@ -9,17 +9,13 @@ from SeleniumLibrary import SeleniumLibrary
 
 class Cathay(SeleniumLibBase, SeleniumBase):
     def __init__(self):
-        self.chromedriver_path = 'C:\\Users\\Shan\\Workspace2\\chromedriver.exe'
-        self.firefoxdriver_path = 'C:\\Users\\Shan\\Workspace2\\geckodriver.exe'
         self.url = "https://www.cathaybk.com.tw/cathaybk/"
         self.se_lib = SeleniumLibrary()
         self.timeout = 10
 
     # 自動化測試: Selenium
     def Scrap_Cathay(self):
-        # options.add_argument("--headless")  
-        # options.add_argument("--disable-gpu")  
-        self.driver = self.Launch_WAP(self.chromedriver_path)
+        self.driver = self.Launch_WAP('chrome')
 
         # 1. 使用Chrome App到國泰世華銀行官網(https://www.cathaybk.com.tw/cathaybk/)並將畫面截圖。
         log(f'Access to <a href="{self.url}" target="_blank">{self.url}</a>')
@@ -27,9 +23,9 @@ class Cathay(SeleniumLibBase, SeleniumBase):
         self.Wait_until_element_is_displayed(By.XPATH, '/html')
         run('Save_Screenshot', 'App main page.png')
         # 2. 點選左上角選單，進入 個人金融 > 產品介紹 > 信用卡列表，需計算有幾個項目在信用卡選單下面，並將畫面截圖。
-        self.Click_it(By.XPATH, Cathay_Xpath['Menu'])
-        self.Click_it(By.XPATH, Cathay_Xpath['產品介紹'])
-        self.Click_it(By.XPATH, Cathay_Xpath['信用卡'])
+        self.Click(By.XPATH, Cathay_Xpath['Menu'])
+        self.Click(By.XPATH, Cathay_Xpath['產品介紹'])
+        self.Click(By.XPATH, Cathay_Xpath['信用卡'])
 
         self.Wait_until_page_Contain_element(By.XPATH, '//div[contains(@class, "is-L2open")]')
         self.Wait_until_element_is_displayed(By.XPATH, Cathay_Xpath['掛失信用卡'])
@@ -41,7 +37,7 @@ class Cathay(SeleniumLibBase, SeleniumBase):
                 log(service.text)
         run('Save_Screenshot', 'credit card services list.png')
         # 3-1. 個人金融 > 產品介紹 > 信用卡 > 卡片介紹 > 計算頁面上所有(停發)信用卡數量
-        self.Click_it(By.XPATH, Cathay_Xpath['卡片介紹'])
+        self.Click(By.XPATH, Cathay_Xpath['卡片介紹'])
         
         attr = self.Check_BlockName('停發卡', 'Base')
 
@@ -79,7 +75,7 @@ class Cathay(SeleniumLibBase, SeleniumBase):
 
     def Robot_Keyword_Scrap_Cathay(self):
         # 1. 使用Chrome App到國泰世華銀行官網(https://www.cathaybk.com.tw/cathaybk/)並將畫面截圖。
-        self.Open_Browser_in_Mobile_View(self.url, driver_path=self.chromedriver_path) 
+        self.Open_Browser_in_Mobile_View(self.url, 'chrome') 
         self.se_lib.wait_until_element_is_visible('xpath:/html', timeout=self.timeout)
         run('Capture_a_Screenshot', 'main page.png')
         # 2. 點選左上角選單，進入 個人金融 > 產品介紹 > 信用卡列表，需計算有幾個項目在信用卡選單下面，並將畫面截圖。
@@ -166,7 +162,7 @@ class Cathay(SeleniumLibBase, SeleniumBase):
     
     def Get_cards_screenshot(self, span_list, attr, source):
         num = 0
-        if source == 'Robot':
+        if source.lower() == 'robot':
             self.Scroll_into_view(f'xpath://section[@data-anchor-block="{attr}"]//span[@aria-label="Go to slide 1"]')
             self.se_lib.wait_until_page_contains_element('xpath:'+Cathay_Xpath['停發卡Tab_active'], timeout=self.timeout)
             for i in range(1, len(span_list)+1):
@@ -175,11 +171,11 @@ class Cathay(SeleniumLibBase, SeleniumBase):
                 run('Capture_a_Screenshot', f'ob_card{str(i)}.png')
                 num = i
 
-        elif source == 'Base':
+        elif source.lower() == 'base':
             self.Scroll_into_view_on_Base(f'//section[@data-anchor-block="{attr}"]')
             self.Wait_until_page_Contain_element(By.XPATH, Cathay_Xpath['停發卡Tab_active'])
             for i in range(1, len(span_list)+1):
-                self.Click_it(By.XPATH, f'//section[@data-anchor-block="{attr}"]//span[@aria-label="Go to slide {str(i)}"]')
+                self.Click(By.XPATH, f'//section[@data-anchor-block="{attr}"]//span[@aria-label="Go to slide {str(i)}"]')
                 sleep(2)
                 run('Save_Screenshot', f'obsoleted_card{str(i)}.png')
                 num = i
@@ -188,9 +184,9 @@ class Cathay(SeleniumLibBase, SeleniumBase):
         return num
 
     def Close_Browser(self, source):
-        if source == 'Robot':
+        if source.lower() == 'robot':
             self.driver.quit()
-        elif source == 'Base':
+        elif source.lower() == 'base':
             self.se_lib.close_all_browsers()
 
 
