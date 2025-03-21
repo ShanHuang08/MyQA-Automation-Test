@@ -9,6 +9,7 @@ from SeleniumLibrary import SeleniumLibrary
 
 class Cathay(SeleniumLibBase, SeleniumBase):
     def __init__(self):
+        super().__init__()  # Make sure SeleniumBase.__init__() can be executed
         self.url = "https://www.cathaybk.com.tw/cathaybk/"
         self.se_lib = SeleniumLibrary()
         self.timeout = 10
