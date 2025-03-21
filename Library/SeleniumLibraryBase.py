@@ -9,8 +9,8 @@ from time import sleep
 class SeleniumLibBase():
     def __init__(self):
         self.se_lib = SeleniumLibrary()
-        self.chromedriver_path = 'C:\\Users\\Shan\\Workspace2\\chromedriver.exe'
-        self.firefoxdriver_path = 'C:\\Users\\Shan\\Workspace2\\geckodriver.exe'
+        self.chromedriver_path = 'C:\\Users\\Shan\\chromedriver.exe'
+        self.firefoxdriver_path = 'C:\\Users\\Shan\\geckodriver.exe'
     
     def Open_Browser_in_Mobile_View(self, url, driver_name):
         """Needs `url` and `Driver name` : 'chrome' or 'firefox'"""
