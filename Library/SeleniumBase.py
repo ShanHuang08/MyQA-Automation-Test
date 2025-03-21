@@ -8,11 +8,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementNotInteractableException, SessionNotCreatedException, WebDriverException
 from Robot_definition import log, log_color, log_img, run, fail
 from time import time
+from test_config import browser
 
 class SeleniumBase():
     def __init__(self):
-        self.chromedriver_path = 'C:\\Users\\Shan\\Workspace2\\chromedriver.exe'
-        self.firefoxdriver_path = 'C:\\Users\\Shan\\Workspace2\\geckodriver.exe'
+        self.chromedriver_path = browser['chrome']
+        self.firefoxdriver_path = browser['firefox']
     
     def Launch_Web(self, driver_name):
         """File path should include `chromedriver.exe`"""
