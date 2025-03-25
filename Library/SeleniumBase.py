@@ -304,7 +304,7 @@ class SeleniumBase():
 
     def Input_Textfield(self, locator, text):
         """`method` default value is XPATH"""
-        self.Wait_until_element_is_enabled(locator=locator)
+        self.Wait_until_element_is_enabled(locator)
         self.find_xpath(locator).send_keys(text)
 
 
@@ -317,7 +317,7 @@ class SeleniumBase():
 
         `method` default value is XPATH
         """
-        self.Wait_until_element_is_displayed(locator=locator)
+        self.Wait_until_element_is_displayed(locator)
         self.find_xpath(locator).location_once_scrolled_into_view
         log(f'Scroll into {locator}')
 

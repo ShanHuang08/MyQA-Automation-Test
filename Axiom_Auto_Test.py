@@ -181,7 +181,7 @@ class Axiom_Auto_Test(API_Methods, SeleniumBase):
         items = self.find_xpaths('//div[@class="inventory_list"]/div') # Check how manys items are listed
         log(f"{len(items)} items are existed")
 
-        nums = sample(range(1, len(items)+1), int(buy)) # Avoid repeated number
+        nums = sample(range(0, len(items)), int(buy)) # Avoid repeated number
         selected_items = [] # Stored picked items
         # Add items to chart
         for i in nums:
@@ -263,13 +263,6 @@ class Axiom_Auto_Test(API_Methods, SeleniumBase):
             # driver.execute_script('document.getElementById("password").value = "";') # Not work
             driver.refresh()
             self.Wait_until_element_is_enabled('//div[@class="form_group"]//input')
-            
-
-            
-
-
-            
-
-
+        
 
 use_globals_update_keywords(Axiom_Auto_Test(), globals())
