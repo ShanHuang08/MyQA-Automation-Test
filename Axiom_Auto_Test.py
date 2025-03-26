@@ -4,7 +4,7 @@ from Library.SeleniumBase import SeleniumBase
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import json
-from time import time, sleep
+from time import time, perf_counter, sleep
 from random import sample, choice
 import asyncio
 import websockets
@@ -60,15 +60,17 @@ class Axiom_Auto_Test(API_Methods, SeleniumBase):
         Total_spent_time = 0
 
         for method, exp_code in zip(methods, exp_codes):
-            start_time = time() * 1000
+            start_time = perf_counter() * 1000
             if method == methods[0] or method == methods[-1]:
                 res = method(self.api_url, auth=None, exp_code=exp_code)
             else:
                 res = method(self.api_url, auth=None, body=None, exp_code=exp_code)
-            end_time = time() * 1000
-            Total_spent_time+=(end_time-start_time)
+            end_time = perf_counter() * 1000
+            elapsed_time = end_time - start_time - self.measure_overhead()
+            Total_spent_time+=(elapsed_time)
             # Check if status code match on each method
             actual_codes.append(res.status_code)
+            sleep(0.25)
 
         Avg_exe_Time = Total_spent_time / len(methods)
         if Avg_exe_Time > 500: 
@@ -117,13 +119,22 @@ class Axiom_Auto_Test(API_Methods, SeleniumBase):
         Total_time = 0
         log(f"<b>===== Check Average Response Time for {count} times =====</b>")
         for i in range(count):
-            start_time = time() * 1000
-            self.GET_Request(self.api_url, exp_code=exp_code)
-            end_time = time() * 1000
-            log(f"GET {self.api_url} url execution time = {"{:.4f}".format(end_time - start_time)} ms")
-            Total_time+=(end_time-start_time)
+            start_time = perf_counter() * 1000
+            res = self.GET_Request(self.api_url, exp_code=exp_code)
+            end_time = perf_counter() * 1000
+            elapsed_time = end_time - start_time - self.measure_overhead()
+            log(f"GET {self.api_url} url execution time = {"{:.4f}".format(elapsed_time)} ms")
+            Total_time+=(elapsed_time)
+            sleep(0.25)
         log(f"<b>===== Check Average Response Time for {count} times =====</b>")
         return Total_time/count
+
+    def measure_overhead(self):
+        """Count the time of overhead"""
+        start_time = perf_counter() * 1000
+        end_time = perf_counter() * 1000
+        overhead = end_time - start_time
+        return overhead
 
     def Final_Test_result(self, err:list):
         if err:
@@ -183,7 +194,7 @@ class Axiom_Auto_Test(API_Methods, SeleniumBase):
 
         nums = sample(range(0, len(items)), int(buy)) # Avoid repeated number
         selected_items = [] # Stored picked items
-        # Add items to chart
+        # Add items to cart
         for i in nums:
             locator = f'//a[@id="item_{i}_title_link"]'
             self.Wait_until_element_is_enabled(locator+'/parent::div/parent::div//button')
