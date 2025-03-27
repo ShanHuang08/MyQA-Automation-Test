@@ -203,10 +203,7 @@ class SeleniumBase():
                     log_color(f"Elements {not_found} was not visible within {wait_secs} seconds.", 'red', level='ERROR')
                 run('Save_Screenshot', f"Fail_screenshot_{int(time())}.png")
                 return None
-            if len(elements) == 1:
-                return elements[0]
-            else:
-                return elements
+            return element
         except Exception as e:
             log_color(f"An unexpected error occurred: {e}", 'red', level='ERROR')
             run('Save_Screenshot', f"Fail_screenshot_{int(time())}.png")
@@ -232,10 +229,7 @@ class SeleniumBase():
                     log_color(f"Elements {not_found} was not enabled within {wait_secs} seconds.", 'red', level='ERROR')
                 run('Save_Screenshot', f"Fail_screenshot_{int(time())}.png")
                 return None
-            if len(elements) == 1:
-                return elements[0]
-            else:
-                return elements
+            return element
         except Exception as e:
             log_color(f"An unexpected error occurred: {e}", 'red', level='ERROR')
             run('Save_Screenshot', f"Fail_screenshot_{int(time())}.png")
@@ -262,10 +256,7 @@ class SeleniumBase():
                     log_color(f"Elements {not_found} was not detected within {wait_secs} seconds.", 'red', level='ERROR')
                 run('Save_Screenshot', f"Fail_screenshot_{int(time())}.png")
                 return None
-            if len(elements) == 1:
-                return elements[0]
-            else:
-                return elements
+            return element
         except Exception as e:
             log_color(f"An unexpected error occurred: {e}", 'red', level='ERROR')
             run('Save_Screenshot', f"Fail_screenshot_{int(time())}.png")
@@ -292,10 +283,7 @@ class SeleniumBase():
                     log_color(f"Elements {not_found} was not selected within {wait_secs} seconds.", 'red', level='ERROR')
                 run('Save_Screenshot', f"Fail_screenshot_{int(time())}.png")
                 return None
-            if len(elements) == 1:
-                return elements[0]
-            else:
-                return elements
+            return element
         except Exception as e:
             log_color(f"An unexpected error occurred: {e}", 'red', level='ERROR')
             run('Save_Screenshot', f"Fail_screenshot_{int(time())}.png")

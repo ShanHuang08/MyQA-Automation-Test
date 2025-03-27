@@ -37,14 +37,13 @@ class Axiom_Auto_Test(API_Methods, SeleniumBase):
         if not self.Check_JSON_response(res.json(), self.exp_keys, self.exp_value):
             err.append('Response check failed!')
         
-        Avg_res_Time = self.Avg_Res_Time(10, exp_code)
-        Avg_res_Time = round(Avg_res_Time, 4)
+        Avg_res_Time = self.GET_Avg_Res_Time(self.api_url, 10)
 
         if Avg_res_Time > 500: 
-            log_color(f"Average api response time is {Avg_res_Time} ms, greater than 500 ms", "red")
+            log_color(f'Average api response time is {"{:.4f}".format(Avg_res_Time)} ms, greater than 500 ms", "red')
             err.append(f"Average api response time is {Avg_res_Time} ms, greater than 500 ms")
         else:
-            log(f"Average api response time is {Avg_res_Time} ms")
+            log(f'Average api response time is {"{:.4f}".format(Avg_res_Time)} ms')
 
         test_case_end = time()
         log(f'Test case executiion time: <b>{"{:.4f}".format(test_case_end - test_case_start)} secs</b>')
@@ -74,7 +73,7 @@ class Axiom_Auto_Test(API_Methods, SeleniumBase):
 
         Avg_exe_Time = Total_spent_time / len(methods)
         if Avg_exe_Time > 500: 
-            log_color(f"Average api response time is {Avg_exe_Time} ms, greater than 500 ms", "red")
+            log_color(f'Average api response time is {"{:.4f}".format(Avg_exe_Time)} ms, greater than 500 ms', 'red')
 
         test_case_end = time()
         log(f'Test case executiion time: <b>{"{:.4f}".format(test_case_end - test_case_start)} secs</b>')
@@ -115,7 +114,7 @@ class Axiom_Auto_Test(API_Methods, SeleniumBase):
 
 
     def Avg_Res_Time(self, count:int, exp_code):
-        """Calculate average api response time by count"""
+        """Utitlze `requests` to Calculate average api response time by count"""
         Total_time = 0
         log(f"<b>===== Check Average Response Time for {count} times =====</b>")
         for i in range(count):
@@ -128,13 +127,6 @@ class Axiom_Auto_Test(API_Methods, SeleniumBase):
             sleep(0.25)
         log(f"<b>===== Check Average Response Time for {count} times =====</b>")
         return Total_time/count
-
-    def measure_overhead(self):
-        """Count the time of overhead"""
-        start_time = perf_counter() * 1000
-        end_time = perf_counter() * 1000
-        overhead = end_time - start_time
-        return overhead
 
     def Final_Test_result(self, err:list):
         if err:

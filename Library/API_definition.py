@@ -2,6 +2,8 @@ import requests
 import urllib3
 from Library.Robot_definition import log, log_color
 urllib3.disable_warnings()
+from time import perf_counter, sleep
+import httpx
 
 class API_Methods():
     def GET_Request(self, url, params=None, auth=None, timeout=20, retries=3, exp_code=None):
@@ -160,3 +162,34 @@ class API_Methods():
         if not success: 
             fail_list_str = '\n'.join(Fail_List)
             raise Exception(f"Retry api failed after {retries} times\n{fail_list_str}")
+
+
+    def GET_Avg_Res_Time(self, url, count:int):
+        """Utilize `httpx` to Calculate average api response time by count"""
+        import asyncio
+        Total_time = 0
+        async def get_res_time():
+            Total = 0
+            async with httpx.AsyncClient(http2=True) as client:
+                for _ in range(count):
+                    start_time = perf_counter() * 1000
+                    await client.get(url)
+                    end_time = perf_counter() * 1000
+                    elapsed_time = end_time - start_time - self.measure_overhead()
+                    log(f"GET {url} url execution time = {"{:.4f}".format(elapsed_time)} ms")
+                    Total+=(elapsed_time)
+                return Total
+        log(f"<b>===== Check Average Response Time for {count} times =====</b>")
+        try:
+            Total_time = asyncio.run(get_res_time()) 
+        except Exception as e:
+            log(f"Connection Error: {e}")
+        log(f"<b>===== Check Average Response Time for {count} times =====</b>")
+        return Total_time/count
+
+    def measure_overhead(self):
+        """Count the time of overhead"""
+        start_time = perf_counter() * 1000
+        end_time = perf_counter() * 1000
+        overhead = end_time - start_time
+        return overhead
