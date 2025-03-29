@@ -191,7 +191,7 @@ class Cathay(SeleniumLibBase, SeleniumBase):
             self.se_lib.close_all_browsers()
 
 
-use_globals_update_keywords(Cathay(), globals())
+use_globals_update_keywords(globals(), Cathay()) # Put all methods of Cathay class to globals(), to be used on other area
 
 # 程式邏輯題目
 def question1(input_list:list):

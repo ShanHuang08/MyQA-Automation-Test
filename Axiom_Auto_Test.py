@@ -268,4 +268,4 @@ class Axiom_Auto_Test(API_Methods, SeleniumBase):
             self.Wait_until_element_is_enabled('//div[@class="form_group"]//input')
         
 
-use_globals_update_keywords(Axiom_Auto_Test(), globals())
+use_globals_update_keywords(globals(), Axiom_Auto_Test()) # Import all keywords in Axiom_Auto_Test class to Robot Framework
